@@ -1,0 +1,81 @@
+openapi: 3.1.0
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8085
+  description: Generated server url
+paths:
+  /reports/products/{productNumber}:
+    get:
+      tags:
+      - report-controller
+      operationId: productReport
+      parameters:
+      - name: productNumber
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: from
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: to
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SingleProductReportDto"
+  /reports/products/{productNumber}/last-movements:
+    get:
+      tags:
+      - report-controller
+      operationId: lastMovements
+      parameters:
+      - name: productNumber
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TransactionDto"
+components:
+  schemas:
+    SingleProductReportDto: {}
+    TransactionDto:
+      type: object
+      properties:
+        id:
+          type: string
+        productNumber:
+          type: string
+        relatedProductNumber:
+          type: string
+        productType:
+          type: string
+        transactionType:
+          type: string
+        amount:
+          type: number
+        fee:
+          type: number
+        balanceAfter:
+          type: number
+        date:
+          type: string
+          format: date-time
